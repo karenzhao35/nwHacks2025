@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const aws_cdk_lib_1 = require("aws-cdk-lib");
+const backend_stack_1 = require("../lib/backend-stack");
+const app = new aws_cdk_lib_1.App();
+new backend_stack_1.MemoriesBackendStack(app, "MemoriesBackendStack");
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYmFja2VuZC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uL2Jpbi9iYWNrZW5kLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7OztBQUNBLDZDQUFrQztBQUNsQyx3REFBNEQ7QUFFNUQsTUFBTSxHQUFHLEdBQUcsSUFBSSxpQkFBRyxFQUFFLENBQUM7QUFDdEIsSUFBSSxvQ0FBb0IsQ0FBQyxHQUFHLEVBQUUsc0JBQXNCLENBQUMsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbIiMhL3Vzci9iaW4vZW52IG5vZGVcbmltcG9ydCB7IEFwcCB9IGZyb20gXCJhd3MtY2RrLWxpYlwiO1xuaW1wb3J0IHsgTWVtb3JpZXNCYWNrZW5kU3RhY2sgfSBmcm9tIFwiLi4vbGliL2JhY2tlbmQtc3RhY2tcIjtcblxuY29uc3QgYXBwID0gbmV3IEFwcCgpO1xubmV3IE1lbW9yaWVzQmFja2VuZFN0YWNrKGFwcCwgXCJNZW1vcmllc0JhY2tlbmRTdGFja1wiKTtcbiJdfQ==

@@ -1,0 +1,949 @@
+{
+ "Resources": {
+  "MemoriesImageBucket3EFE67C1": {
+   "Type": "AWS::S3::Bucket",
+   "Properties": {
+    "BucketEncryption": {
+     "ServerSideEncryptionConfiguration": [
+      {
+       "ServerSideEncryptionByDefault": {
+        "SSEAlgorithm": "AES256"
+       }
+      }
+     ]
+    },
+    "BucketName": {
+     "Fn::Join": [
+      "",
+      [
+       "memories-images-",
+       {
+        "Ref": "AWS::AccountId"
+       }
+      ]
+     ]
+    },
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET",
+        "HEAD",
+        "PUT",
+        "POST",
+        "DELETE"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ],
+       "ExposedHeaders": [
+        "ETag"
+       ]
+      }
+     ]
+    },
+    "PublicAccessBlockConfiguration": {
+     "BlockPublicAcls": false,
+     "BlockPublicPolicy": false,
+     "IgnorePublicAcls": false,
+     "RestrictPublicBuckets": false
+    }
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesImageBucket/Resource"
+   }
+  },
+  "MemoriesImageBucketPolicy4CBB04B5": {
+   "Type": "AWS::S3::BucketPolicy",
+   "Properties": {
+    "Bucket": {
+     "Ref": "MemoriesImageBucket3EFE67C1"
+    },
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "MemoriesImageBucket3EFE67C1",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesImageBucket/Policy/Resource"
+   }
+  },
+  "AccountTable95876246": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "id",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "id",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "account-table"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/AccountTable/Resource"
+   }
+  },
+  "MessageTable477906EA": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "recipient_id",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "sender_id",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "GlobalSecondaryIndexes": [
+     {
+      "IndexName": "sender-index",
+      "KeySchema": [
+       {
+        "AttributeName": "sender_id",
+        "KeyType": "HASH"
+       }
+      ],
+      "Projection": {
+       "ProjectionType": "ALL"
+      }
+     }
+    ],
+    "KeySchema": [
+     {
+      "AttributeName": "recipient_id",
+      "KeyType": "HASH"
+     }
+    ],
+    "TableName": "message-table"
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MessageTable/Resource"
+   }
+  },
+  "MemoriesLambdaRoleA285468C": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Policies": [
+     {
+      "PolicyDocument": {
+       "Statement": [
+        {
+         "Action": [
+          "ec2:CreateNetworkInterface",
+          "ec2:Describe*",
+          "ec2:DeleteNetworkInterface",
+          "iam:GetRole",
+          "iam:PassRole",
+          "lambda:InvokeFunction",
+          "s3:*",
+          "kms:*",
+          "sts:AssumeRole",
+          "cloudwatch:*",
+          "logs:*",
+          "dynanodb:*"
+         ],
+         "Effect": "Allow",
+         "Resource": "*"
+        }
+       ],
+       "Version": "2012-10-17"
+      },
+      "PolicyName": "additional"
+     }
+    ],
+    "RoleName": "MemoriesLambdaRole"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesLambdaRole/Resource"
+   }
+  },
+  "UploadMessageFunctionC2C52306": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+     },
+     "S3Key": "0526ad2ef485f82f067c52555633596444bb554a684c29bde3054406e2b97c21.zip"
+    },
+    "FunctionName": "UploadMessage",
+    "Handler": "upload-message.handler",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "MemoriesLambdaRoleA285468C",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 300
+   },
+   "DependsOn": [
+    "MemoriesLambdaRoleA285468C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/UploadMessageFunction/Resource",
+    "aws:asset:path": "asset.0526ad2ef485f82f067c52555633596444bb554a684c29bde3054406e2b97c21",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "UploadMessageFunctionLogRetentionA6A3DEA6": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "UploadMessageFunctionC2C52306"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 90
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/UploadMessageFunction/LogRetention/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "logs:PutRetentionPolicy",
+        "logs:DeleteRetentionPolicy"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "Roles": [
+     {
+      "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Handler": "index.handler",
+    "Runtime": "nodejs20.x",
+    "Timeout": 900,
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+     },
+     "S3Key": "2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d.zip"
+    },
+    "Role": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/Resource",
+    "aws:asset:path": "asset.2819175352ad1ce0dae768e83fc328fb70fb5f10b4a8ff0ccbcb791f02b0716d",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "GetMessageFunctionD212FA80": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+     },
+     "S3Key": "0526ad2ef485f82f067c52555633596444bb554a684c29bde3054406e2b97c21.zip"
+    },
+    "FunctionName": "GetMessage",
+    "Handler": "get-message.handler",
+    "MemorySize": 1024,
+    "Role": {
+     "Fn::GetAtt": [
+      "MemoriesLambdaRoleA285468C",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs18.x",
+    "Timeout": 300
+   },
+   "DependsOn": [
+    "MemoriesLambdaRoleA285468C"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/GetMessageFunction/Resource",
+    "aws:asset:path": "asset.0526ad2ef485f82f067c52555633596444bb554a684c29bde3054406e2b97c21",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "GetMessageFunctionLogRetentionA79A8AC7": {
+   "Type": "Custom::LogRetention",
+   "Properties": {
+    "ServiceToken": {
+     "Fn::GetAtt": [
+      "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+      "Arn"
+     ]
+    },
+    "LogGroupName": {
+     "Fn::Join": [
+      "",
+      [
+       "/aws/lambda/",
+       {
+        "Ref": "GetMessageFunctionD212FA80"
+       }
+      ]
+     ]
+    },
+    "RetentionInDays": 90
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/GetMessageFunction/LogRetention/Resource"
+   }
+  },
+  "MemoriesApiGateway947F2C69": {
+   "Type": "AWS::ApiGateway::RestApi",
+   "Properties": {
+    "Name": "Memories API"
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Resource"
+   }
+  },
+  "MemoriesApiGatewayCloudWatchRole54AE1446": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "apigateway.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs"
+       ]
+      ]
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/CloudWatchRole/Resource"
+   }
+  },
+  "MemoriesApiGatewayAccount7BCBC466": {
+   "Type": "AWS::ApiGateway::Account",
+   "Properties": {
+    "CloudWatchRoleArn": {
+     "Fn::GetAtt": [
+      "MemoriesApiGatewayCloudWatchRole54AE1446",
+      "Arn"
+     ]
+    }
+   },
+   "DependsOn": [
+    "MemoriesApiGateway947F2C69"
+   ],
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Account"
+   }
+  },
+  "MemoriesApiGatewayDeployment21B89B5701de9cdf07a0f810b13ef12d42ff9423": {
+   "Type": "AWS::ApiGateway::Deployment",
+   "Properties": {
+    "Description": "Automatically created by the RestApi construct",
+    "RestApiId": {
+     "Ref": "MemoriesApiGateway947F2C69"
+    }
+   },
+   "DependsOn": [
+    "MemoriesApiGatewaymessageGET819B04B0",
+    "MemoriesApiGatewaymessageOPTIONSBEE378A3",
+    "MemoriesApiGatewaymessagePOSTB071ECE7",
+    "MemoriesApiGatewaymessageDF92114F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Deployment/Resource"
+   }
+  },
+  "MemoriesApiGatewayDeploymentStageprod75D18A24": {
+   "Type": "AWS::ApiGateway::Stage",
+   "Properties": {
+    "DeploymentId": {
+     "Ref": "MemoriesApiGatewayDeployment21B89B5701de9cdf07a0f810b13ef12d42ff9423"
+    },
+    "RestApiId": {
+     "Ref": "MemoriesApiGateway947F2C69"
+    },
+    "StageName": "prod"
+   },
+   "DependsOn": [
+    "MemoriesApiGatewayAccount7BCBC466"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/DeploymentStage.prod/Resource"
+   }
+  },
+  "MemoriesApiGatewaymessageDF92114F": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Fn::GetAtt": [
+      "MemoriesApiGateway947F2C69",
+      "RootResourceId"
+     ]
+    },
+    "PathPart": "message",
+    "RestApiId": {
+     "Ref": "MemoriesApiGateway947F2C69"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/Resource"
+   }
+  },
+  "MemoriesApiGatewaymessagePOSTApiPermissionMemoriesBackendStackMemoriesApiGatewayF58812DEPOSTmessageEB6E07AC": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UploadMessageFunctionC2C52306",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "MemoriesApiGateway947F2C69"
+       },
+       "/",
+       {
+        "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+       },
+       "/POST/message"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/POST/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..message"
+   }
+  },
+  "MemoriesApiGatewaymessagePOSTApiPermissionTestMemoriesBackendStackMemoriesApiGatewayF58812DEPOSTmessage90D0428A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UploadMessageFunctionC2C52306",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "MemoriesApiGateway947F2C69"
+       },
+       "/test-invoke-stage/POST/message"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/POST/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..message"
+   }
+  },
+  "MemoriesApiGatewaymessagePOSTB071ECE7": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "UploadMessageFunctionC2C52306",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MemoriesApiGatewaymessageDF92114F"
+    },
+    "RestApiId": {
+     "Ref": "MemoriesApiGateway947F2C69"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/POST/Resource"
+   }
+  },
+  "MemoriesApiGatewaymessageGETApiPermissionMemoriesBackendStackMemoriesApiGatewayF58812DEGETmessage67D81044": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "GetMessageFunctionD212FA80",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "MemoriesApiGateway947F2C69"
+       },
+       "/",
+       {
+        "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+       },
+       "/GET/message"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/GET/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..message"
+   }
+  },
+  "MemoriesApiGatewaymessageGETApiPermissionTestMemoriesBackendStackMemoriesApiGatewayF58812DEGETmessage692D8D7C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "GetMessageFunctionD212FA80",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "MemoriesApiGateway947F2C69"
+       },
+       "/test-invoke-stage/GET/message"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/GET/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..message"
+   }
+  },
+  "MemoriesApiGatewaymessageGET819B04B0": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "GET",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "GetMessageFunctionD212FA80",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MemoriesApiGatewaymessageDF92114F"
+    },
+    "RestApiId": {
+     "Ref": "MemoriesApiGateway947F2C69"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/GET/Resource"
+   }
+  },
+  "MemoriesApiGatewaymessageOPTIONSApiPermissionMemoriesBackendStackMemoriesApiGatewayF58812DEOPTIONSmessage8F989E1D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UploadMessageFunctionC2C52306",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "MemoriesApiGateway947F2C69"
+       },
+       "/",
+       {
+        "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+       },
+       "/OPTIONS/message"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/OPTIONS/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.OPTIONS..message"
+   }
+  },
+  "MemoriesApiGatewaymessageOPTIONSApiPermissionTestMemoriesBackendStackMemoriesApiGatewayF58812DEOPTIONSmessageF4DFCB8D": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "UploadMessageFunctionC2C52306",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "MemoriesApiGateway947F2C69"
+       },
+       "/test-invoke-stage/OPTIONS/message"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/OPTIONS/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.OPTIONS..message"
+   }
+  },
+  "MemoriesApiGatewaymessageOPTIONSBEE378A3": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "OPTIONS",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "UploadMessageFunctionC2C52306",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MemoriesApiGatewaymessageDF92114F"
+    },
+    "RestApiId": {
+     "Ref": "MemoriesApiGateway947F2C69"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/message/OPTIONS/Resource"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/1WPQW/CMAyFfwv34DGQtjMw7bRpqOyO3NSUQJtUtbOqivLfpyZoZaf3Pcd+sdfw/PoCqwUOvNTVbdmYEsJRUN8UDnwKvIGw8/pGovZne6csB9cYPc7lu89mh0xRVaPF1lUlhG8sG5p6E0RlsIVQuFxLOsdliqrBtqwQwru3Woyz09sjH6hvDbNxNirenJCZhGE7iWpczfDh6oKEbBrAztQoNOAIoSCWbWfS3zNutXbeinqjrnFjSzbd/OCOgnVaOENB7Hyvabr1z9wzM3+SXFw1lTLFOPelPacgY+t/Q/uz/fLSeYnKuorgyk8/6zWsYLW4sjHL3lsxLUGR9ReOZ4OawgEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/CDKMetadata/Default"
+   }
+  }
+ },
+ "Outputs": {
+  "MemoriesApiGatewayEndpoint482A63CD": {
+   "Value": {
+    "Fn::Join": [
+     "",
+     [
+      "https://",
+      {
+       "Ref": "MemoriesApiGateway947F2C69"
+      },
+      ".execute-api.us-west-2.",
+      {
+       "Ref": "AWS::URLSuffix"
+      },
+      "/",
+      {
+       "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+      },
+      "/"
+     ]
+    ]
+   }
+  }
+ },
+ "Parameters": {
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
