@@ -1,11 +1,3 @@
-//
-//  SelectionPageView.swift
-//  frontend
-//
-//  Created by Martin Wong on 2025-01-18.
-//
- 
-
 import SwiftUI
 
 struct SelectionPageView: View {
@@ -13,23 +5,67 @@ struct SelectionPageView: View {
         VStack {
             VStack {
                 Text("Hey :)")
+                    .font(.largeTitle) // Optional: Customize text style
+                    .padding()
+
                 Spacer()
-                Rectangle()
-                    .cornerRadius(30, corners: [.allCorners])
-                    .frame(height: 100)
-                    .foregroundColor(Color(hex: "#E2F2FF")) // #FFEDD4
+
+                // First Rectangle with Text
+                ZStack {
+                    Rectangle()
+                        .cornerRadius(30, corners: [.allCorners])
+                        .frame(height: 100)
+                        .foregroundColor(Color(hex: "#E2F2FF")) // #E2F2FF color
+
+                    Text("Share treasurable moments!")
+                        .foregroundColor(.black) // Text color
+                        .font(.headline) // Text style
+                }
+
                 Spacer()
-                Rectangle()
-                    .cornerRadius(30, corners: [.allCorners])
-                    .frame(height: 200)
-                    .foregroundColor(Color(hex: "#E2F2FF")) // #FFEDD4
+
+                ZStack {
+                    Rectangle()
+                        .cornerRadius(30, corners: [.allCorners])
+                        .frame(height: 250)
+                        .foregroundColor(Color(hex: "#E2F2FF")) // #E2F2FF color
+
+                    VStack {
+                        Spacer()
+
+                        Text("Feeling under the weather?\nSelect one of the following:")
+                            .foregroundColor(.black) // Text color
+                            .font(.headline) // Text style
+                            .multilineTextAlignment(.center) // Center alignment
+
+                        Spacer()
+
+                        HStack {
+                            VStack {
+                                Image(uiImage: .sad)
+                                Text("Sad")
+                            }
+                            VStack {
+                                Image(uiImage: .anxious)
+                                Text("Anxious")
+                            }
+                            VStack {
+                                Image(uiImage: .annoyed)
+                                Text("Annoyed")
+                            }
+                        }
+                        .frame(maxWidth: .infinity) // Expand HStack to full width
+                    }
+                    
+                }
+
                 Spacer()
             }
-            .frame(maxHeight: .infinity) // Ensure the HStack takes up the full width
-            .padding(.all, 50)
-            
+            .frame(maxHeight: .infinity) // Ensure the VStack takes up the full height
+            .padding(.all, 40)
+
+            BottomNavigationView()
         }
-        BottomNavigationView()
     }
 }
 
