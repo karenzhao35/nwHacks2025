@@ -140,6 +140,7 @@ export class MemoriesBackendStack extends Stack {
             logRetention: RetentionDays.THREE_MONTHS,
         });
 
+<<<<<<< HEAD
         this.addFriendFunction = new Function(this, "AddFriendFunction", {
             functionName: "AddFriend",
             code: new AssetCode("build/src"),
@@ -150,6 +151,18 @@ export class MemoriesBackendStack extends Stack {
             timeout: Duration.seconds(30),
             logRetention: RetentionDays.THREE_MONTHS,
         });
+=======
+    this.addFriendFunction = new Function(this, "AddFriendFunction", {
+      functionName: "AddFriend",
+      code: new AssetCode("build/src"),
+      handler: "add-friend.handler",
+      runtime: Runtime.NODEJS_18_X,
+      role: lambdaRole,
+      memorySize: 1024,
+      timeout: Duration.seconds(30),
+      logRetention: RetentionDays.THREE_MONTHS,
+    });
+>>>>>>> origin/main
 
         this.getFriendListFunction = new Function(
             this,
@@ -236,6 +249,7 @@ export class MemoriesBackendStack extends Stack {
             .addResource("friends")
             .addMethod("GET", getFriendsIntegration);
 
+<<<<<<< HEAD
         const getAllUsersIntegration = new LambdaIntegration(
             this.getAllUsersFunction
         );
@@ -243,4 +257,12 @@ export class MemoriesBackendStack extends Stack {
             .addResource("all")
             .addMethod("GET", getAllUsersIntegration);
     }
+=======
+    const getAllUsersIntegration = new LambdaIntegration(this.getAllUsersFunction);
+    accountResource.addResource("all").addMethod("GET", getAllUsersIntegration);
+
+    const addAccountIntegration = new LambdaIntegration(this.addNewAccountFunction, { proxy: true });
+    accountResource.addResource("create").addMethod("POST", addAccountIntegration);
+  }
+>>>>>>> origin/main
 }

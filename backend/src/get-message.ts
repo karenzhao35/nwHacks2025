@@ -36,7 +36,7 @@ exports.handler = async (event: any) => {
             return {
                 statusCode: 404,
                 body: JSON.stringify({
-                    message: "No messages found for this recipient",
+                    message: "This person has no friends",
                 }),
             };
         }
