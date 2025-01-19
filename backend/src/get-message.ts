@@ -1,52 +1,94 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
 import { DynamoDBClient, QueryCommand } from "@aws-sdk/client-dynamodb";
 
-const ddb = new DynamoDBClient({ region: "us-west-2" });
+const ddbClient = new DynamoDBClient({ region: "us-west-2" });
 const MESSAGE_TABLE_NAME = "message-table";
 
-/**
- * This Lambda retrieves messages for a given 'recipient_id' from the 'message-table'.
- * Expects a query parameter: ?recipient_id=someRecipientID
- */
-export const handler = async (event: APIGatewayEvent, _: Context) => {
-  try {
-    const recipient_id = event.queryStringParameters?.recipient_id;
-    if (!recipient_id) {
-      return {
-        statusCode: 400,
-        body: JSON.stringify({ message: "recipient_id query parameter is required" }),
-      };
+exports.handler = async (event: any) => {
+    try {
+        // Get the recipient_id from the query string parameters of the GET request
+        const recipientId = event.queryStringParameters.recipient_id;
+        const mood = event.queryStringParameters.mood;
+
+        if (!recipientId) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ message: "Recipient ID is required" }),
+            };
+        }
+
+        if (!mood) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ message: "Mood is required" }),
+            };
+        }
+
+        // Define the DynamoDB query parameters
+        const params = {
+            TableName: MESSAGE_TABLE_NAME,
+            KeyConditionExpression: "recipient_id = :recipient_id",
+            ExpressionAttributeValues: {
+                ":recipient_id": { S: recipientId },
+            },
+            ScanIndexForward: false,
+        };
+
+        // Execute the query on DynamoDB
+        const data = await ddbClient.send(new QueryCommand(params));
+
+        // Check if there are any items returned
+        if (data.Items && data.Items.length > 0) {
+            let filteredItems = data.Items;
+            // Filter the items where the category is "calming"
+            if (mood === "anxious") {
+                filteredItems = data.Items.filter(
+                    (item: any) => item.category?.S === "encouraging"
+                );
+            } else if (mood === "annoyed") {
+                filteredItems = data.Items.filter(
+                    (item: any) => item.category?.S === "calming"
+                );
+            } else if (mood === "sad") {
+                filteredItems = data.Items.filter(
+                    (item: any) => item.category?.S === "empathetic"
+                );
+            } else {
+                return {
+                    statusCode: 500,
+                    body: JSON.stringify({
+                        message:
+                            'Invalid mood, must be one of: "anxious", "annoyed", "sad"',
+                    }),
+                };
+            }
+
+            if (filteredItems.length > 0) {
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify(filteredItems),
+                };
+            } else {
+                return {
+                    statusCode: 404,
+                    body: JSON.stringify({
+                        message: "No matching messages found",
+                    }),
+                };
+            }
+        } else {
+            return {
+                statusCode: 404,
+                body: JSON.stringify({
+                    message: "This person has no friends",
+                }),
+            };
+        }
+    } catch (error) {
+        console.error(error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ message: "Internal server error" }),
+        };
     }
-
-    // Query for all messages with the given recipient_id
-    const queryParams = {
-      TableName: MESSAGE_TABLE_NAME,
-      KeyConditionExpression: "recipient_id = :rid",
-      ExpressionAttributeValues: {
-        ":rid": { S: recipient_id },
-      },
-    };
-
-    const result = await ddb.send(new QueryCommand(queryParams));
-
-    // Convert DynamoDB Items into a more friendly JSON shape
-    const messages = (result.Items || []).map((item) => ({
-      sender_id: item.sender_id?.S,
-      recipient_id: item.recipient_id?.S,
-      message: item.message?.S,
-      s3_image: item.s3_image?.S,
-      date: item.date?.S,
-      category: item.category?.S,
-    }));
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ messages }),
-    };
-  } catch (error) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ message: "Failed to retrieve messages", error }),
-    };
-  }
 };
