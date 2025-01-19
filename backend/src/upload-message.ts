@@ -16,7 +16,6 @@ interface Message {
     message: string;
     s3_image?: string;
     date: string;
-    category: string;
 }
 
 /**
@@ -36,11 +35,10 @@ export const invokeModel = async (
     const client = new BedrockRuntimeClient({ region: "us-west-2" });
 
     // Prepare the payload for the model.
-    prompt = `"Remember, every great idea starts with a spark, and you're already igniting something amazing. The work you're doing—whether it's building solutions to help others or pushing your skills to new heights—matters deeply. Challenges may come, but they’re just stepping stones to something incredible. You’ve got the creativity, the skills, and the heart to make a real difference."
-Classify this message as "Empathy", "Encouragement", "Compliment", "Negative"
+    prompt = `"${prompt}"
 Return a json in the form:
 {
-"mood": <class>
+"category": "test-class"
 }`;
     const payload = {
         anthropic_version: "bedrock-2023-05-31",
@@ -66,6 +64,7 @@ Return a json in the form:
     /** @type {MessagesResponseBody} */
     const responseBody = JSON.parse(decodedResponseBody);
     console.log("BEDROCK_RESPONSE: ", responseBody.content[0].text);
+    return responseBody.content[0].text;
 };
 
 /**
@@ -82,14 +81,11 @@ const dynamoDbClient = new DynamoDBClient();
 export const handler = async (event: any) => {
     console.log("POST REQUEST: ", JSON.stringify(event));
 
-    // await invokeModel("");
-
     let messageData: Message = {
         sender_id: "",
         recipient_id: "",
         message: "",
         date: "",
-        category: "",
     };
 
     try {
@@ -103,10 +99,12 @@ export const handler = async (event: any) => {
             `Image URL: ${messageData.s3_image ?? "No image provided"}`
         );
         console.log(`Date: ${new Date(messageData.date).toLocaleString()}`);
-        console.log(`Mood: ${messageData.category}`);
     } catch (error) {
         console.error("Failed to parse JSON:", error);
     }
+
+    const modelResponseStr = await invokeModel(messageData.message);
+    const modelResponseObj = JSON.parse(modelResponseStr);
 
     const tableName = "message-table"; // Replace with your table name
     const item = {
@@ -126,7 +124,7 @@ export const handler = async (event: any) => {
             S: messageData.date,
         },
         category: {
-            S: messageData.category,
+            S: modelResponseObj.category,
         },
     };
 
