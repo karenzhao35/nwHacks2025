@@ -5,6 +5,7 @@
     "private": true,
     "scripts": {
         "build": "tsc && if not exist build\\src mkdir build\\src && copy package.json build\\src\\package.json && cd build\\src && npm install --omit=dev",
+        "build-mac": "tsc && mkdir -p build/src && cp package.json build/src/package.json && cd build/src && npm install --omit=dev",
         "watch": "tsc -w",
         "cdk": "cdk",
         "clean": "rm -rf build"
