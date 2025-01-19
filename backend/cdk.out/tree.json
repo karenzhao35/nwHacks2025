@@ -287,7 +287,7 @@
                                 "sts:AssumeRole",
                                 "cloudwatch:*",
                                 "logs:*",
-                                "dynanodb:*"
+                                "dynamodb:*"
                               ],
                               "Effect": "Allow",
                               "Resource": "*"
@@ -351,7 +351,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "0526ad2ef485f82f067c52555633596444bb554a684c29bde3054406e2b97c21.zip"
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
                     },
                     "functionName": "UploadMessage",
                     "handler": "upload-message.handler",
@@ -586,7 +586,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "0526ad2ef485f82f067c52555633596444bb554a684c29bde3054406e2b97c21.zip"
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
                     },
                     "functionName": "GetMessage",
                     "handler": "get-message.handler",
@@ -635,6 +635,501 @@
             },
             "constructInfo": {
               "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.176.0"
+            }
+          },
+          "AddFriendFunction": {
+            "id": "AddFriendFunction",
+            "path": "MemoriesBackendStack/AddFriendFunction",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "MemoriesBackendStack/AddFriendFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MemoriesBackendStack/AddFriendFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.176.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MemoriesBackendStack/AddFriendFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.176.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.176.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MemoriesBackendStack/AddFriendFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+                      },
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                    },
+                    "functionName": "AddFriend",
+                    "handler": "add-friend.handler",
+                    "memorySize": 1024,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "MemoriesLambdaRoleA285468C",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.176.0"
+                }
+              },
+              "LogRetention": {
+                "id": "LogRetention",
+                "path": "MemoriesBackendStack/AddFriendFunction/LogRetention",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MemoriesBackendStack/AddFriendFunction/LogRetention/Resource",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.176.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.LogRetention",
+                  "version": "2.176.0"
+                }
+              },
+              "LogGroup": {
+                "id": "LogGroup",
+                "path": "MemoriesBackendStack/AddFriendFunction/LogGroup",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.176.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.176.0"
+            }
+          },
+          "GetFriendListFunction": {
+            "id": "GetFriendListFunction",
+            "path": "MemoriesBackendStack/GetFriendListFunction",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "MemoriesBackendStack/GetFriendListFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MemoriesBackendStack/GetFriendListFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.176.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MemoriesBackendStack/GetFriendListFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.176.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.176.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MemoriesBackendStack/GetFriendListFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+                      },
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                    },
+                    "functionName": "GetFriendList",
+                    "handler": "get-friends-list.handler",
+                    "memorySize": 1024,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "MemoriesLambdaRoleA285468C",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.176.0"
+                }
+              },
+              "LogRetention": {
+                "id": "LogRetention",
+                "path": "MemoriesBackendStack/GetFriendListFunction/LogRetention",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MemoriesBackendStack/GetFriendListFunction/LogRetention/Resource",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.176.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.LogRetention",
+                  "version": "2.176.0"
+                }
+              },
+              "LogGroup": {
+                "id": "LogGroup",
+                "path": "MemoriesBackendStack/GetFriendListFunction/LogGroup",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.176.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.176.0"
+            }
+          },
+          "GetAllUsersFunction": {
+            "id": "GetAllUsersFunction",
+            "path": "MemoriesBackendStack/GetAllUsersFunction",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "MemoriesBackendStack/GetAllUsersFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MemoriesBackendStack/GetAllUsersFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.176.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MemoriesBackendStack/GetAllUsersFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.176.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.176.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MemoriesBackendStack/GetAllUsersFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+                      },
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                    },
+                    "functionName": "GetAllUsers",
+                    "handler": "get-all-users.handler",
+                    "memorySize": 1024,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "MemoriesLambdaRoleA285468C",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.176.0"
+                }
+              },
+              "LogRetention": {
+                "id": "LogRetention",
+                "path": "MemoriesBackendStack/GetAllUsersFunction/LogRetention",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MemoriesBackendStack/GetAllUsersFunction/LogRetention/Resource",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.176.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.LogRetention",
+                  "version": "2.176.0"
+                }
+              },
+              "LogGroup": {
+                "id": "LogGroup",
+                "path": "MemoriesBackendStack/GetAllUsersFunction/LogGroup",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.176.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.176.0"
+            }
+          },
+          "AddNewAccountFunction": {
+            "id": "AddNewAccountFunction",
+            "path": "MemoriesBackendStack/AddNewAccountFunction",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "MemoriesBackendStack/AddNewAccountFunction/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "MemoriesBackendStack/AddNewAccountFunction/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.AssetStaging",
+                      "version": "2.176.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "MemoriesBackendStack/AddNewAccountFunction/Code/AssetBucket",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_s3.BucketBase",
+                      "version": "2.176.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_s3_assets.Asset",
+                  "version": "2.176.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "MemoriesBackendStack/AddNewAccountFunction/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
+                      },
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                    },
+                    "functionName": "AddNewAccount",
+                    "handler": "add-new-account.handler",
+                    "memorySize": 1024,
+                    "role": {
+                      "Fn::GetAtt": [
+                        "MemoriesLambdaRoleA285468C",
+                        "Arn"
+                      ]
+                    },
+                    "runtime": "nodejs18.x",
+                    "timeout": 30
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnFunction",
+                  "version": "2.176.0"
+                }
+              },
+              "LogRetention": {
+                "id": "LogRetention",
+                "path": "MemoriesBackendStack/AddNewAccountFunction/LogRetention",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "MemoriesBackendStack/AddNewAccountFunction/LogRetention/Resource",
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.CfnResource",
+                      "version": "2.176.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_logs.LogRetention",
+                  "version": "2.176.0"
+                }
+              },
+              "LogGroup": {
+                "id": "LogGroup",
+                "path": "MemoriesBackendStack/AddNewAccountFunction/LogGroup",
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.Resource",
+                  "version": "2.176.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_lambda.Function",
+              "version": "2.176.0"
+            }
+          },
+          "MemoriesUserPool": {
+            "id": "MemoriesUserPool",
+            "path": "MemoriesBackendStack/MemoriesUserPool",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "MemoriesBackendStack/MemoriesUserPool/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Cognito::UserPool",
+                  "aws:cdk:cloudformation:props": {
+                    "accountRecoverySetting": {
+                      "recoveryMechanisms": [
+                        {
+                          "name": "verified_phone_number",
+                          "priority": 1
+                        },
+                        {
+                          "name": "verified_email",
+                          "priority": 2
+                        }
+                      ]
+                    },
+                    "adminCreateUserConfig": {
+                      "allowAdminCreateUserOnly": true
+                    },
+                    "emailVerificationMessage": "The verification code to your new account is {####}",
+                    "emailVerificationSubject": "Verify your new account",
+                    "lambdaConfig": {
+                      "postConfirmation": {
+                        "Fn::GetAtt": [
+                          "AddNewAccountFunctionEA34F85D",
+                          "Arn"
+                        ]
+                      }
+                    },
+                    "smsVerificationMessage": "The verification code to your new account is {####}",
+                    "userPoolName": "MemoriesUserPool",
+                    "verificationMessageTemplate": {
+                      "defaultEmailOption": "CONFIRM_WITH_CODE",
+                      "emailMessage": "The verification code to your new account is {####}",
+                      "emailSubject": "Verify your new account",
+                      "smsMessage": "The verification code to your new account is {####}"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cognito.CfnUserPool",
+                  "version": "2.176.0"
+                }
+              },
+              "PostConfirmationCognito": {
+                "id": "PostConfirmationCognito",
+                "path": "MemoriesBackendStack/MemoriesUserPool/PostConfirmationCognito",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                  "aws:cdk:cloudformation:props": {
+                    "action": "lambda:InvokeFunction",
+                    "functionName": {
+                      "Fn::GetAtt": [
+                        "AddNewAccountFunctionEA34F85D",
+                        "Arn"
+                      ]
+                    },
+                    "principal": "cognito-idp.amazonaws.com",
+                    "sourceArn": {
+                      "Fn::GetAtt": [
+                        "MemoriesUserPool953B5BE7",
+                        "Arn"
+                      ]
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                  "version": "2.176.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cognito.UserPool",
+              "version": "2.176.0"
+            }
+          },
+          "MemoriesUserPoolClient": {
+            "id": "MemoriesUserPoolClient",
+            "path": "MemoriesBackendStack/MemoriesUserPoolClient",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "MemoriesBackendStack/MemoriesUserPoolClient/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Cognito::UserPoolClient",
+                  "aws:cdk:cloudformation:props": {
+                    "allowedOAuthFlows": [
+                      "implicit",
+                      "code"
+                    ],
+                    "allowedOAuthFlowsUserPoolClient": true,
+                    "allowedOAuthScopes": [
+                      "profile",
+                      "phone",
+                      "email",
+                      "openid",
+                      "aws.cognito.signin.user.admin"
+                    ],
+                    "callbackUrLs": [
+                      "https://example.com"
+                    ],
+                    "supportedIdentityProviders": [
+                      "COGNITO"
+                    ],
+                    "userPoolId": {
+                      "Ref": "MemoriesUserPool953B5BE7"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "aws-cdk-lib.aws_cognito.CfnUserPoolClient",
+                  "version": "2.176.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "aws-cdk-lib.aws_cognito.UserPoolClient",
               "version": "2.176.0"
             }
           },
@@ -770,7 +1265,7 @@
                       "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
                       "aws:cdk:cloudformation:props": {
                         "deploymentId": {
-                          "Ref": "MemoriesApiGatewayDeployment21B89B5701de9cdf07a0f810b13ef12d42ff9423"
+                          "Ref": "MemoriesApiGatewayDeployment21B89B579a3e2b128e7a89d8b413e3a6962ac949"
                         },
                         "restApiId": {
                           "Ref": "MemoriesApiGateway947F2C69"
@@ -1245,6 +1740,719 @@
                         },
                         "constructInfo": {
                           "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                          "version": "2.176.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                      "version": "2.176.0"
+                    }
+                  },
+                  "account": {
+                    "id": "account",
+                    "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account",
+                    "children": {
+                      "Resource": {
+                        "id": "Resource",
+                        "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/Resource",
+                        "attributes": {
+                          "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                          "aws:cdk:cloudformation:props": {
+                            "parentId": {
+                              "Fn::GetAtt": [
+                                "MemoriesApiGateway947F2C69",
+                                "RootResourceId"
+                              ]
+                            },
+                            "pathPart": "account",
+                            "restApiId": {
+                              "Ref": "MemoriesApiGateway947F2C69"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                          "version": "2.176.0"
+                        }
+                      },
+                      "friend": {
+                        "id": "friend",
+                        "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friend",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friend/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                              "aws:cdk:cloudformation:props": {
+                                "parentId": {
+                                  "Ref": "MemoriesApiGatewayaccount5C932CA0"
+                                },
+                                "pathPart": "friend",
+                                "restApiId": {
+                                  "Ref": "MemoriesApiGateway947F2C69"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                              "version": "2.176.0"
+                            }
+                          },
+                          "POST": {
+                            "id": "POST",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friend/POST",
+                            "children": {
+                              "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.friend": {
+                                "id": "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.friend",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friend/POST/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.friend",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "AddFriendFunction1368FC5F",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+                                          },
+                                          "/POST/account/friend"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.friend": {
+                                "id": "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.friend",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friend/POST/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.friend",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "AddFriendFunction1368FC5F",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/test-invoke-stage/POST/account/friend"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friend/POST/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "POST",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "AddFriendFunction1368FC5F",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "MemoriesApiGatewayaccountfriend2906E131"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "MemoriesApiGateway947F2C69"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.176.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.176.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                          "version": "2.176.0"
+                        }
+                      },
+                      "friends": {
+                        "id": "friends",
+                        "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friends",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friends/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                              "aws:cdk:cloudformation:props": {
+                                "parentId": {
+                                  "Ref": "MemoriesApiGatewayaccount5C932CA0"
+                                },
+                                "pathPart": "friends",
+                                "restApiId": {
+                                  "Ref": "MemoriesApiGateway947F2C69"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                              "version": "2.176.0"
+                            }
+                          },
+                          "GET": {
+                            "id": "GET",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friends/GET",
+                            "children": {
+                              "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.friends": {
+                                "id": "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.friends",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friends/GET/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.friends",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "GetFriendListFunction63E50417",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+                                          },
+                                          "/GET/account/friends"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.friends": {
+                                "id": "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.friends",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friends/GET/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.friends",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "GetFriendListFunction63E50417",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/test-invoke-stage/GET/account/friends"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/friends/GET/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "GET",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "GetFriendListFunction63E50417",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "MemoriesApiGatewayaccountfriendsE8DA3367"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "MemoriesApiGateway947F2C69"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.176.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.176.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                          "version": "2.176.0"
+                        }
+                      },
+                      "all": {
+                        "id": "all",
+                        "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/all",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/all/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                              "aws:cdk:cloudformation:props": {
+                                "parentId": {
+                                  "Ref": "MemoriesApiGatewayaccount5C932CA0"
+                                },
+                                "pathPart": "all",
+                                "restApiId": {
+                                  "Ref": "MemoriesApiGateway947F2C69"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                              "version": "2.176.0"
+                            }
+                          },
+                          "GET": {
+                            "id": "GET",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/all/GET",
+                            "children": {
+                              "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.all": {
+                                "id": "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.all",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/all/GET/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.all",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "GetAllUsersFunction307D0C94",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+                                          },
+                                          "/GET/account/all"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.all": {
+                                "id": "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.all",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/all/GET/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.GET..account.all",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "GetAllUsersFunction307D0C94",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/test-invoke-stage/GET/account/all"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/all/GET/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "GET",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "GetAllUsersFunction307D0C94",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "MemoriesApiGatewayaccountall708AAEF6"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "MemoriesApiGateway947F2C69"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.176.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.176.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                          "version": "2.176.0"
+                        }
+                      },
+                      "create": {
+                        "id": "create",
+                        "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                              "aws:cdk:cloudformation:props": {
+                                "parentId": {
+                                  "Ref": "MemoriesApiGatewayaccount5C932CA0"
+                                },
+                                "pathPart": "create",
+                                "restApiId": {
+                                  "Ref": "MemoriesApiGateway947F2C69"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                              "version": "2.176.0"
+                            }
+                          },
+                          "POST": {
+                            "id": "POST",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST",
+                            "children": {
+                              "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create": {
+                                "id": "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "AddNewAccountFunctionEA34F85D",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+                                          },
+                                          "/POST/account/create"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create": {
+                                "id": "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "AddNewAccountFunctionEA34F85D",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/test-invoke-stage/POST/account/create"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "POST",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "AddNewAccountFunctionEA34F85D",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "MemoriesApiGatewayaccountcreate529AD12C"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "MemoriesApiGateway947F2C69"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.176.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.176.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Resource",
                           "version": "2.176.0"
                         }
                       }
