@@ -217,7 +217,22 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+     "S3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "BUCKET_NAME": {
+       "Fn::Join": [
+        "",
+        [
+         "memories-images-",
+         {
+          "Ref": "AWS::AccountId"
+         }
+        ]
+       ]
+      }
+     }
     },
     "FunctionName": "UploadMessage",
     "Handler": "upload-message.handler",
@@ -236,7 +251,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/UploadMessageFunction/Resource",
-    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
+    "aws:asset:path": "asset.045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -365,7 +380,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+     "S3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
     },
     "FunctionName": "GetMessage",
     "Handler": "get-message.handler",
@@ -384,7 +399,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/GetMessageFunction/Resource",
-    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
+    "aws:asset:path": "asset.045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -422,7 +437,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+     "S3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
     },
     "FunctionName": "AddFriend",
     "Handler": "add-friend.handler",
@@ -441,7 +456,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/AddFriendFunction/Resource",
-    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
+    "aws:asset:path": "asset.045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -479,7 +494,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+     "S3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
     },
     "FunctionName": "GetFriendList",
     "Handler": "get-friends-list.handler",
@@ -498,7 +513,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/GetFriendListFunction/Resource",
-    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
+    "aws:asset:path": "asset.045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -536,7 +551,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+     "S3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
     },
     "FunctionName": "GetAllUsers",
     "Handler": "get-all-users.handler",
@@ -555,7 +570,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/GetAllUsersFunction/Resource",
-    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
+    "aws:asset:path": "asset.045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -593,7 +608,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+     "S3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
     },
     "FunctionName": "AddNewAccount",
     "Handler": "add-new-account.handler",
@@ -612,7 +627,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/AddNewAccountFunction/Resource",
-    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
+    "aws:asset:path": "asset.045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }

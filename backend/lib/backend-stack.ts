@@ -122,6 +122,9 @@ export class MemoriesBackendStack extends Stack {
       memorySize: 1024,
       timeout: Duration.seconds(300),
       logRetention: RetentionDays.THREE_MONTHS,
+      environment: {
+        BUCKET_NAME: `memories-images-${this.account}`,
+      },
     });
 
     this.getMessageFunction = new Function(this, "GetMessageFunction", {

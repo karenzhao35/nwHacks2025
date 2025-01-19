@@ -351,7 +351,22 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                      "s3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
+                    },
+                    "environment": {
+                      "variables": {
+                        "BUCKET_NAME": {
+                          "Fn::Join": [
+                            "",
+                            [
+                              "memories-images-",
+                              {
+                                "Ref": "AWS::AccountId"
+                              }
+                            ]
+                          ]
+                        }
+                      }
                     },
                     "functionName": "UploadMessage",
                     "handler": "upload-message.handler",
@@ -586,7 +601,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                      "s3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
                     },
                     "functionName": "GetMessage",
                     "handler": "get-message.handler",
@@ -678,7 +693,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                      "s3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
                     },
                     "functionName": "AddFriend",
                     "handler": "add-friend.handler",
@@ -770,7 +785,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                      "s3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
                     },
                     "functionName": "GetFriendList",
                     "handler": "get-friends-list.handler",
@@ -862,7 +877,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                      "s3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
                     },
                     "functionName": "GetAllUsers",
                     "handler": "get-all-users.handler",
@@ -954,7 +969,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
+                      "s3Key": "045524c1aa0673589dbe5e7493c844df3afbec4ad10969d7d22c45b9b16c3f0e.zip"
                     },
                     "functionName": "AddNewAccount",
                     "handler": "add-new-account.handler",
