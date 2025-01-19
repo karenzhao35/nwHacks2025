@@ -8,13 +8,15 @@ import {
     BedrockRuntimeClient,
     InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
+import { v4 as uuidv4 } from "uuid";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 // Interface for the Message structure
 interface Message {
     sender_id: string;
     recipient_id: string;
     message: string;
-    s3_image?: string;
+    imageBase64?: string;
 }
 
 /**
@@ -75,7 +77,11 @@ Categorize this message as "encouraging", "calming", "empathetic" Return this ca
  * Handler function for uploadMessage Lambda
  */
 
-const dynamoDbClient = new DynamoDBClient();
+const dynamoDbClient = new DynamoDBClient({ region: "us-west-2" });
+const s3 = new S3Client({ region: "us-west-2" });
+
+const BUCKET_NAME = "memories-images-495599764132";
+const MESSAGE_TABLE_NAME = "message-table";
 
 export const handler = async (event: any) => {
     console.log("POST REQUEST: ", JSON.stringify(event));
@@ -89,11 +95,25 @@ export const handler = async (event: any) => {
     try {
         messageData = JSON.parse(event.body);
 
+        if (
+            !messageData.sender_id ||
+            !messageData.recipient_id ||
+            !messageData.message
+        ) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({
+                    message:
+                        "Missing required fields (sender_id, recipient_id, or message)",
+                }),
+            };
+        }
+
         // Example usage
         console.log(`Sender ID: ${messageData.sender_id}`);
         console.log(`Recipient ID: ${messageData.recipient_id}`);
         console.log(`Message: ${messageData.message}`);
-        console.log(`Image URL: ${messageData.s3_image ?? "none"}`);
+        console.log(`Image: ${messageData.imageBase64 ?? "none"}`);
     } catch (error) {
         console.error("Failed to parse JSON:", error);
     }
@@ -101,53 +121,70 @@ export const handler = async (event: any) => {
     const modelResponseStr = await invokeModel(messageData.message);
     const modelResponseObj = JSON.parse(modelResponseStr);
 
-    const tableName = "message-table";
-    const currentDateISO = new Date().toISOString();
-    const item = {
-        recipient_id: {
-            S: messageData.recipient_id,
-        }, // Partition key
-        sender_id: {
-            S: messageData.sender_id,
-        },
-        message: {
-            S: messageData.message,
-        },
-        s3_image: {
-            S: messageData.s3_image ?? "",
-        },
-        date: {
-            S: currentDateISO,
-        },
-        category: {
-            S: modelResponseObj.category,
-        },
-    };
+    let imageURL = "none";
 
-    const params = {
-        Item: item,
-        ReturnConsumedCapacity: ReturnConsumedCapacity.NONE,
-        TableName: tableName,
-    };
+    if (messageData.imageBase64) {
+        try {
+            // Generate a unique S3 object key
+            const imageKey = `images/${uuidv4()}.jpg`;
+            const imageBuffer = Buffer.from(messageData.imageBase64, "base64");
+
+            await s3.send(
+                new PutObjectCommand({
+                    Bucket: BUCKET_NAME,
+                    Key: imageKey,
+                    Body: imageBuffer,
+                    ContentType: "image/jpeg",
+                })
+            );
+
+            imageURL = `https://${BUCKET_NAME}.s3.amazonaws.com/${imageKey}`;
+        } catch (error) {
+            const errorMessage =
+                error instanceof Error ? error.message : "Unknown error";
+            console.error("Error uploading image to S3", errorMessage);
+            return {
+                statusCode: 500,
+                body: JSON.stringify({
+                    message: "Failed to upload image to S3",
+                    error: errorMessage,
+                }),
+            };
+        }
+    }
+
+    const currentDateISO = new Date().toISOString();
 
     try {
-        const result = await dynamoDbClient.send(new PutItemCommand(params));
-        console.log("Item added successfully:", result);
+        // Store message metadata (including image URL) in DynamoDB
+        await dynamoDbClient.send(
+            new PutItemCommand({
+                TableName: MESSAGE_TABLE_NAME,
+                Item: {
+                    sender_id: { S: messageData.sender_id },
+                    recipient_id: { S: messageData.recipient_id },
+                    message: { S: messageData.message },
+                    s3_image: { S: imageURL },
+                    date: { S: currentDateISO },
+                    category: { S: modelResponseObj.category },
+                },
+            })
+        );
+
         return {
             statusCode: 200,
             body: JSON.stringify({
-                message: "Item added successfully",
-                result,
+                message: "Message and image stored successfully",
             }),
         };
     } catch (error) {
         const errorMessage =
             error instanceof Error ? error.message : "Unknown error";
-        console.error("Error adding item:", errorMessage);
+        console.error("Error uploading to DynamoDB", errorMessage);
         return {
             statusCode: 500,
             body: JSON.stringify({
-                message: "Failed to add item",
+                message: "Failed to upload to DynamoDB",
                 error: errorMessage,
             }),
         };

@@ -1,6 +1,8 @@
-const { DynamoDBClient, QueryCommand } = require("@aws-sdk/client-dynamodb");
+import { APIGatewayEvent, Context } from "aws-lambda";
+import { DynamoDBClient, QueryCommand } from "@aws-sdk/client-dynamodb";
 
-const ddbClient = new DynamoDBClient();
+const ddbClient = new DynamoDBClient({ region: "us-west-2" });
+const MESSAGE_TABLE_NAME = "message-table";
 
 exports.handler = async (event: any) => {
     try {
@@ -24,7 +26,7 @@ exports.handler = async (event: any) => {
 
         // Define the DynamoDB query parameters
         const params = {
-            TableName: "message-table",
+            TableName: MESSAGE_TABLE_NAME,
             KeyConditionExpression: "recipient_id = :recipient_id",
             ExpressionAttributeValues: {
                 ":recipient_id": { S: recipientId },
