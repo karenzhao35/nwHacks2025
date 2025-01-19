@@ -74,6 +74,10 @@ export class MemoriesBackendStack extends Stack {
         this.messageTable = new Table(this, "MessageTable", {
             tableName: MemoriesBackendStack.MESSAGE_TABLE,
             partitionKey: { name: "recipient_id", type: AttributeType.STRING },
+            sortKey: {
+                name: "date",
+                type: AttributeType.STRING,
+            },
             billingMode: BillingMode.PAY_PER_REQUEST,
         });
 

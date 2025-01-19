@@ -6,11 +6,19 @@ exports.handler = async (event: any) => {
     try {
         // Get the recipient_id from the query string parameters of the GET request
         const recipientId = event.queryStringParameters.recipient_id;
+        const mood = event.queryStringParameters.mood;
 
         if (!recipientId) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({ message: "Recipient ID is required" }),
+            };
+        }
+
+        if (!mood) {
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ message: "Mood is required" }),
             };
         }
 
@@ -21,6 +29,7 @@ exports.handler = async (event: any) => {
             ExpressionAttributeValues: {
                 ":recipient_id": { S: recipientId },
             },
+            ScanIndexForward: false,
         };
 
         // Execute the query on DynamoDB
@@ -28,10 +37,35 @@ exports.handler = async (event: any) => {
 
         // Check if there are any items returned
         if (data.Items && data.Items.length > 0) {
-            return {
-                statusCode: 200,
-                body: JSON.stringify(data.Items),
-            };
+            let filteredItems = data.Items;
+            // Filter the items where the category is "calming"
+            if (mood === "anxious") {
+                filteredItems = data.Items.filter(
+                    (item: any) => item.category?.S === "encouraging"
+                );
+            } else if (mood === "annoyed") {
+                filteredItems = data.Items.filter(
+                    (item: any) => item.category?.S === "calming"
+                );
+            } else if (mood === "sad") {
+                filteredItems = data.Items.filter(
+                    (item: any) => item.category?.S === "empathetic"
+                );
+            }
+
+            if (filteredItems.length > 0) {
+                return {
+                    statusCode: 200,
+                    body: JSON.stringify(filteredItems),
+                };
+            } else {
+                return {
+                    statusCode: 404,
+                    body: JSON.stringify({
+                        message: "No matching messages found",
+                    }),
+                };
+            }
         } else {
             return {
                 statusCode: 404,

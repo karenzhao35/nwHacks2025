@@ -15,7 +15,6 @@ interface Message {
     recipient_id: string;
     message: string;
     s3_image?: string;
-    date: string;
 }
 
 /**
@@ -36,9 +35,9 @@ export const invokeModel = async (
 
     // Prepare the payload for the model.
     prompt = `"${prompt}"
-Return a json in the form:
+Categorize this message as "encouraging", "calming", "empathetic" Return this category as as a string in JSON format like this:
 {
-"category": "test-class"
+"category": <category>
 }`;
     const payload = {
         anthropic_version: "bedrock-2023-05-31",
@@ -85,7 +84,6 @@ export const handler = async (event: any) => {
         sender_id: "",
         recipient_id: "",
         message: "",
-        date: "",
     };
 
     try {
@@ -95,10 +93,7 @@ export const handler = async (event: any) => {
         console.log(`Sender ID: ${messageData.sender_id}`);
         console.log(`Recipient ID: ${messageData.recipient_id}`);
         console.log(`Message: ${messageData.message}`);
-        console.log(
-            `Image URL: ${messageData.s3_image ?? "No image provided"}`
-        );
-        console.log(`Date: ${new Date(messageData.date).toLocaleString()}`);
+        console.log(`Image URL: ${messageData.s3_image ?? "none"}`);
     } catch (error) {
         console.error("Failed to parse JSON:", error);
     }
@@ -106,7 +101,8 @@ export const handler = async (event: any) => {
     const modelResponseStr = await invokeModel(messageData.message);
     const modelResponseObj = JSON.parse(modelResponseStr);
 
-    const tableName = "message-table"; // Replace with your table name
+    const tableName = "message-table";
+    const currentDateISO = new Date().toISOString();
     const item = {
         recipient_id: {
             S: messageData.recipient_id,
@@ -121,7 +117,7 @@ export const handler = async (event: any) => {
             S: messageData.s3_image ?? "",
         },
         date: {
-            S: messageData.date,
+            S: currentDateISO,
         },
         category: {
             S: modelResponseObj.category,
