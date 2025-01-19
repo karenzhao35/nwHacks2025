@@ -1,44 +1,52 @@
-import { PostConfirmationTriggerEvent, Context } from "aws-lambda";
-import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { APIGatewayEvent, Context } from "aws-lambda";
+import {
+  DynamoDBClient,
+  PutItemCommand,
+} from "@aws-sdk/client-dynamodb";
+import { v4 as uuidv4 } from "uuid";
 
 const ddbClient = new DynamoDBClient({ region: "us-west-2" });
-
 const ACCOUNT_TABLE_NAME = "account-table";
 
-export const handler = async (event: PostConfirmationTriggerEvent, _: Context) => {
+export const handler = async (event: APIGatewayEvent, _: Context) => {
   try {
-    const userId = event.request.userAttributes.sub;
-    if (!userId) {
-      console.warn("No 'sub' attribute found in the Cognito event.");
-      return event; 
+    if (!event.body) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "No request body provided" }),
+      };
     }
 
-    const email = event.request.userAttributes.email || "";
-    const displayName = event.userName; 
+    const { email, displayName } = JSON.parse(event.body);
+    if (!email || !displayName) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "email and displayName required" }),
+      };
+    }
 
-    console.log("Cognito Post Confirmation Trigger:", {
-      userId,
-      email,
-      displayName,
-    });
+    const userId = uuidv4();
 
-    const putParams = {
-      TableName: ACCOUNT_TABLE_NAME,
-      Item: {
-        id: { S: userId },
-        email: { S: email },
-        displayName: { S: displayName },
-        friends: { L: [] }, 
-      },
+    await ddbClient.send(
+      new PutItemCommand({
+        TableName: ACCOUNT_TABLE_NAME,
+        Item: {
+          id: { S: userId },
+          email: { S: email },
+          displayName: { S: displayName },
+          friends: { L: [] },
+        },
+      })
+    );
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ userId, message: "Account created" }),
     };
-
-    await ddbClient.send(new PutItemCommand(putParams));
-    console.log("Successfully inserted user into DynamoDB:", ACCOUNT_TABLE_NAME);
-
- 
-    return event;
   } catch (error) {
-    console.error("Error in add-new-account PostConfirmation trigger:", error);
-    throw error; 
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Failed to create account", error }),
+    };
   }
 };

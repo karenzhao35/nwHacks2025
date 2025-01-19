@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-us-west-2",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-us-west-2",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2/57d4c01713648edc14badc6ee466de7aaf3460c67e4432389fd929e2e987e5f6.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2/7100d3778a7e0e6349800621d87edc52a75a6cb34452c37b6515b05113f89235.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -209,7 +209,7 @@
         "/MemoriesBackendStack/MemoriesApiGateway/Deployment/Resource": [
           {
             "type": "aws:cdk:logicalId",
-            "data": "MemoriesApiGatewayDeployment21B89B57fb84358b280768152890fea4a7e5d38b"
+            "data": "MemoriesApiGatewayDeployment21B89B579a3e2b128e7a89d8b413e3a6962ac949"
           }
         ],
         "/MemoriesBackendStack/MemoriesApiGateway/DeploymentStage.prod/Resource": [
@@ -360,6 +360,30 @@
           {
             "type": "aws:cdk:logicalId",
             "data": "MemoriesApiGatewayaccountallGETF2C4EE3B"
+          }
+        ],
+        "/MemoriesBackendStack/MemoriesApiGateway/Default/account/create/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MemoriesApiGatewayaccountcreate529AD12C"
+          }
+        ],
+        "/MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MemoriesApiGatewayaccountcreatePOSTApiPermissionMemoriesBackendStackMemoriesApiGatewayF58812DEPOSTaccountcreate62C86C09"
+          }
+        ],
+        "/MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MemoriesApiGatewayaccountcreatePOSTApiPermissionTestMemoriesBackendStackMemoriesApiGatewayF58812DEPOSTaccountcreateABCB1843"
+          }
+        ],
+        "/MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MemoriesApiGatewayaccountcreatePOST4C6A5221"
           }
         ],
         "/MemoriesBackendStack/CDKMetadata/Default": [

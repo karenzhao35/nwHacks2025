@@ -138,7 +138,7 @@ export class MemoriesBackendStack extends Stack {
     this.addFriendFunction = new Function(this, "AddFriendFunction", {
       functionName: "AddFriend",
       code: new AssetCode("build/src"),
-      handler: "friend-add.handler",
+      handler: "add-friend.handler",
       runtime: Runtime.NODEJS_18_X,
       role: lambdaRole,
       memorySize: 1024,
@@ -210,5 +210,8 @@ export class MemoriesBackendStack extends Stack {
 
     const getAllUsersIntegration = new LambdaIntegration(this.getAllUsersFunction);
     accountResource.addResource("all").addMethod("GET", getAllUsersIntegration);
+
+    const addAccountIntegration = new LambdaIntegration(this.addNewAccountFunction, { proxy: true });
+    accountResource.addResource("create").addMethod("POST", addAccountIntegration);
   }
 }

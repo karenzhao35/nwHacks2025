@@ -217,7 +217,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
     },
     "FunctionName": "UploadMessage",
     "Handler": "upload-message.handler",
@@ -236,7 +236,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/UploadMessageFunction/Resource",
-    "aws:asset:path": "asset.1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58",
+    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -365,7 +365,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
     },
     "FunctionName": "GetMessage",
     "Handler": "get-message.handler",
@@ -384,7 +384,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/GetMessageFunction/Resource",
-    "aws:asset:path": "asset.1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58",
+    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -422,10 +422,10 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
     },
     "FunctionName": "AddFriend",
-    "Handler": "friend-add.handler",
+    "Handler": "add-friend.handler",
     "MemorySize": 1024,
     "Role": {
      "Fn::GetAtt": [
@@ -441,7 +441,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/AddFriendFunction/Resource",
-    "aws:asset:path": "asset.1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58",
+    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -479,7 +479,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
     },
     "FunctionName": "GetFriendList",
     "Handler": "get-friends-list.handler",
@@ -498,7 +498,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/GetFriendListFunction/Resource",
-    "aws:asset:path": "asset.1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58",
+    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -536,7 +536,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
     },
     "FunctionName": "GetAllUsers",
     "Handler": "get-all-users.handler",
@@ -555,7 +555,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/GetAllUsersFunction/Resource",
-    "aws:asset:path": "asset.1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58",
+    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -593,7 +593,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
      },
-     "S3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+     "S3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
     },
     "FunctionName": "AddNewAccount",
     "Handler": "add-new-account.handler",
@@ -612,7 +612,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/AddNewAccountFunction/Resource",
-    "aws:asset:path": "asset.1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58",
+    "aws:asset:path": "asset.624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -801,7 +801,7 @@
     "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Account"
    }
   },
-  "MemoriesApiGatewayDeployment21B89B57fb84358b280768152890fea4a7e5d38b": {
+  "MemoriesApiGatewayDeployment21B89B579a3e2b128e7a89d8b413e3a6962ac949": {
    "Type": "AWS::ApiGateway::Deployment",
    "Properties": {
     "Description": "Automatically created by the RestApi construct",
@@ -812,6 +812,8 @@
    "DependsOn": [
     "MemoriesApiGatewayaccountallGETF2C4EE3B",
     "MemoriesApiGatewayaccountall708AAEF6",
+    "MemoriesApiGatewayaccountcreatePOST4C6A5221",
+    "MemoriesApiGatewayaccountcreate529AD12C",
     "MemoriesApiGatewayaccountfriendPOSTFC9569CB",
     "MemoriesApiGatewayaccountfriend2906E131",
     "MemoriesApiGatewayaccountfriendsGETCA2095CD",
@@ -830,7 +832,7 @@
    "Type": "AWS::ApiGateway::Stage",
    "Properties": {
     "DeploymentId": {
-     "Ref": "MemoriesApiGatewayDeployment21B89B57fb84358b280768152890fea4a7e5d38b"
+     "Ref": "MemoriesApiGatewayDeployment21B89B579a3e2b128e7a89d8b413e3a6962ac949"
     },
     "RestApiId": {
      "Ref": "MemoriesApiGateway947F2C69"
@@ -1613,6 +1615,136 @@
    },
    "Metadata": {
     "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/all/GET/Resource"
+   }
+  },
+  "MemoriesApiGatewayaccountcreate529AD12C": {
+   "Type": "AWS::ApiGateway::Resource",
+   "Properties": {
+    "ParentId": {
+     "Ref": "MemoriesApiGatewayaccount5C932CA0"
+    },
+    "PathPart": "create",
+    "RestApiId": {
+     "Ref": "MemoriesApiGateway947F2C69"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/Resource"
+   }
+  },
+  "MemoriesApiGatewayaccountcreatePOSTApiPermissionMemoriesBackendStackMemoriesApiGatewayF58812DEPOSTaccountcreate62C86C09": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AddNewAccountFunctionEA34F85D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "MemoriesApiGateway947F2C69"
+       },
+       "/",
+       {
+        "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+       },
+       "/POST/account/create"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create"
+   }
+  },
+  "MemoriesApiGatewayaccountcreatePOSTApiPermissionTestMemoriesBackendStackMemoriesApiGatewayF58812DEPOSTaccountcreateABCB1843": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "AddNewAccountFunctionEA34F85D",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-west-2:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "MemoriesApiGateway947F2C69"
+       },
+       "/test-invoke-stage/POST/account/create"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create"
+   }
+  },
+  "MemoriesApiGatewayaccountcreatePOST4C6A5221": {
+   "Type": "AWS::ApiGateway::Method",
+   "Properties": {
+    "AuthorizationType": "NONE",
+    "HttpMethod": "POST",
+    "Integration": {
+     "IntegrationHttpMethod": "POST",
+     "Type": "AWS_PROXY",
+     "Uri": {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+        {
+         "Fn::GetAtt": [
+          "AddNewAccountFunctionEA34F85D",
+          "Arn"
+         ]
+        },
+        "/invocations"
+       ]
+      ]
+     }
+    },
+    "ResourceId": {
+     "Ref": "MemoriesApiGatewayaccountcreate529AD12C"
+    },
+    "RestApiId": {
+     "Ref": "MemoriesApiGateway947F2C69"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/Resource"
    }
   },
   "CDKMetadata": {

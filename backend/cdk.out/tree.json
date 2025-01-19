@@ -351,7 +351,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
                     },
                     "functionName": "UploadMessage",
                     "handler": "upload-message.handler",
@@ -586,7 +586,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
                     },
                     "functionName": "GetMessage",
                     "handler": "get-message.handler",
@@ -678,10 +678,10 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
                     },
                     "functionName": "AddFriend",
-                    "handler": "friend-add.handler",
+                    "handler": "add-friend.handler",
                     "memorySize": 1024,
                     "role": {
                       "Fn::GetAtt": [
@@ -770,7 +770,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
                     },
                     "functionName": "GetFriendList",
                     "handler": "get-friends-list.handler",
@@ -862,7 +862,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
                     },
                     "functionName": "GetAllUsers",
                     "handler": "get-all-users.handler",
@@ -954,7 +954,7 @@
                       "s3Bucket": {
                         "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-us-west-2"
                       },
-                      "s3Key": "1ff41918ac1d01955146bdad17a59e8c562e678b22a80c50c16dc43c95ff5d58.zip"
+                      "s3Key": "624c61edaf2ea952963024f49d33af3493d6e391fb543b8edd5015d7197821de.zip"
                     },
                     "functionName": "AddNewAccount",
                     "handler": "add-new-account.handler",
@@ -1265,7 +1265,7 @@
                       "aws:cdk:cloudformation:type": "AWS::ApiGateway::Stage",
                       "aws:cdk:cloudformation:props": {
                         "deploymentId": {
-                          "Ref": "MemoriesApiGatewayDeployment21B89B57fb84358b280768152890fea4a7e5d38b"
+                          "Ref": "MemoriesApiGatewayDeployment21B89B579a3e2b128e7a89d8b413e3a6962ac949"
                         },
                         "restApiId": {
                           "Ref": "MemoriesApiGateway947F2C69"
@@ -2263,6 +2263,176 @@
                                     },
                                     "resourceId": {
                                       "Ref": "MemoriesApiGatewayaccountall708AAEF6"
+                                    },
+                                    "restApiId": {
+                                      "Ref": "MemoriesApiGateway947F2C69"
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_apigateway.CfnMethod",
+                                  "version": "2.176.0"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.Method",
+                              "version": "2.176.0"
+                            }
+                          }
+                        },
+                        "constructInfo": {
+                          "fqn": "aws-cdk-lib.aws_apigateway.Resource",
+                          "version": "2.176.0"
+                        }
+                      },
+                      "create": {
+                        "id": "create",
+                        "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create",
+                        "children": {
+                          "Resource": {
+                            "id": "Resource",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/Resource",
+                            "attributes": {
+                              "aws:cdk:cloudformation:type": "AWS::ApiGateway::Resource",
+                              "aws:cdk:cloudformation:props": {
+                                "parentId": {
+                                  "Ref": "MemoriesApiGatewayaccount5C932CA0"
+                                },
+                                "pathPart": "create",
+                                "restApiId": {
+                                  "Ref": "MemoriesApiGateway947F2C69"
+                                }
+                              }
+                            },
+                            "constructInfo": {
+                              "fqn": "aws-cdk-lib.aws_apigateway.CfnResource",
+                              "version": "2.176.0"
+                            }
+                          },
+                          "POST": {
+                            "id": "POST",
+                            "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST",
+                            "children": {
+                              "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create": {
+                                "id": "ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/ApiPermission.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "AddNewAccountFunctionEA34F85D",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/",
+                                          {
+                                            "Ref": "MemoriesApiGatewayDeploymentStageprod75D18A24"
+                                          },
+                                          "/POST/account/create"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create": {
+                                "id": "ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/ApiPermission.Test.MemoriesBackendStackMemoriesApiGatewayF58812DE.POST..account.create",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::Lambda::Permission",
+                                  "aws:cdk:cloudformation:props": {
+                                    "action": "lambda:InvokeFunction",
+                                    "functionName": {
+                                      "Fn::GetAtt": [
+                                        "AddNewAccountFunctionEA34F85D",
+                                        "Arn"
+                                      ]
+                                    },
+                                    "principal": "apigateway.amazonaws.com",
+                                    "sourceArn": {
+                                      "Fn::Join": [
+                                        "",
+                                        [
+                                          "arn:",
+                                          {
+                                            "Ref": "AWS::Partition"
+                                          },
+                                          ":execute-api:us-west-2:",
+                                          {
+                                            "Ref": "AWS::AccountId"
+                                          },
+                                          ":",
+                                          {
+                                            "Ref": "MemoriesApiGateway947F2C69"
+                                          },
+                                          "/test-invoke-stage/POST/account/create"
+                                        ]
+                                      ]
+                                    }
+                                  }
+                                },
+                                "constructInfo": {
+                                  "fqn": "aws-cdk-lib.aws_lambda.CfnPermission",
+                                  "version": "2.176.0"
+                                }
+                              },
+                              "Resource": {
+                                "id": "Resource",
+                                "path": "MemoriesBackendStack/MemoriesApiGateway/Default/account/create/POST/Resource",
+                                "attributes": {
+                                  "aws:cdk:cloudformation:type": "AWS::ApiGateway::Method",
+                                  "aws:cdk:cloudformation:props": {
+                                    "authorizationType": "NONE",
+                                    "httpMethod": "POST",
+                                    "integration": {
+                                      "type": "AWS_PROXY",
+                                      "uri": {
+                                        "Fn::Join": [
+                                          "",
+                                          [
+                                            "arn:",
+                                            {
+                                              "Ref": "AWS::Partition"
+                                            },
+                                            ":apigateway:us-west-2:lambda:path/2015-03-31/functions/",
+                                            {
+                                              "Fn::GetAtt": [
+                                                "AddNewAccountFunctionEA34F85D",
+                                                "Arn"
+                                              ]
+                                            },
+                                            "/invocations"
+                                          ]
+                                        ]
+                                      },
+                                      "integrationHttpMethod": "POST"
+                                    },
+                                    "resourceId": {
+                                      "Ref": "MemoriesApiGatewayaccountcreate529AD12C"
                                     },
                                     "restApiId": {
                                       "Ref": "MemoriesApiGateway947F2C69"
