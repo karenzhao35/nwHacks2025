@@ -9,6 +9,16 @@ import {
     InvokeModelCommand,
 } from "@aws-sdk/client-bedrock-runtime";
 
+// Interface for the Message structure
+interface Message {
+    sender_id: string;
+    recipient_id: string;
+    message: string;
+    s3_image?: string;
+    date: string;
+    category: string;
+}
+
 /**
  * Invokes Anthropic Claude 3 using the Messages API.
  *
@@ -58,32 +68,65 @@ Return a json in the form:
     console.log("BEDROCK_RESPONSE: ", responseBody.content[0].text);
 };
 
+/**
+ *
+ *
+ *
+ *
+ *
+ * Handler function for uploadMessage Lambda
+ */
+
 const dynamoDbClient = new DynamoDBClient();
 
 export const handler = async (event: any) => {
-    console.log("POST REQUEST: ", event);
+    console.log("POST REQUEST: ", JSON.stringify(event));
 
-    await invokeModel("");
+    // await invokeModel("");
+
+    let messageData: Message = {
+        sender_id: "",
+        recipient_id: "",
+        message: "",
+        date: "",
+        category: "",
+    };
+
+    try {
+        messageData = JSON.parse(event.body);
+
+        // Example usage
+        console.log(`Sender ID: ${messageData.sender_id}`);
+        console.log(`Recipient ID: ${messageData.recipient_id}`);
+        console.log(`Message: ${messageData.message}`);
+        console.log(
+            `Image URL: ${messageData.s3_image ?? "No image provided"}`
+        );
+        console.log(`Date: ${new Date(messageData.date).toLocaleString()}`);
+        console.log(`Mood: ${messageData.category}`);
+    } catch (error) {
+        console.error("Failed to parse JSON:", error);
+    }
 
     const tableName = "message-table"; // Replace with your table name
     const item = {
         recipient_id: {
-            S: "test-id",
+            S: messageData.recipient_id,
         }, // Partition key
         sender_id: {
-            S: "test-id-2",
+            S: messageData.sender_id,
         },
         message: {
-            S: "GOOD LUCK WITH YOUR STUFF!",
+            S: messageData.message,
         },
         s3_image: {
-            S: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Google_Images_2015_logo.svg/800px-Google_Images_2015_logo.svg.png",
+            S: messageData.s3_image ?? "",
         },
         date: {
-            S: "Jul 12 2011",
+            S: messageData.date,
         },
-        mood: {
-            S: "excited",
+        category: {
+            S: messageData.category,
         },
     };
 
