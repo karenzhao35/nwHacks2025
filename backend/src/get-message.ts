@@ -53,6 +53,14 @@ exports.handler = async (event: any) => {
                 filteredItems = data.Items.filter(
                     (item: any) => item.category?.S === "empathetic"
                 );
+            } else {
+                return {
+                    statusCode: 500,
+                    body: JSON.stringify({
+                        message:
+                            'Invalid mood, must be one of: "anxious", "annoyed", "sad"',
+                    }),
+                };
             }
 
             if (filteredItems.length > 0) {
