@@ -1,159 +1,70 @@
-import {
-    DynamoDBClient,
-    PutItemCommand,
-    ReturnConsumedCapacity,
-} from "@aws-sdk/client-dynamodb";
+import { APIGatewayEvent, Context } from "aws-lambda";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { DynamoDBClient, PutItemCommand } from "@aws-sdk/client-dynamodb";
+import { v4 as uuidv4 } from "uuid";
 
-import {
-    BedrockRuntimeClient,
-    InvokeModelCommand,
-} from "@aws-sdk/client-bedrock-runtime";
+const s3 = new S3Client({ region: "us-west-2" });
+const ddb = new DynamoDBClient({ region: "us-west-2" });
 
-// Interface for the Message structure
-interface Message {
-    sender_id: string;
-    recipient_id: string;
-    message: string;
-    s3_image?: string;
-    date: string;
-}
+const BUCKET_NAME = "memories-images-495599764132";
+const MESSAGE_TABLE_NAME = "message-table";
 
-/**
- * Invokes Anthropic Claude 3 using the Messages API.
- *
- * To learn more about the Anthropic Messages API, go to:
- * https://docs.aws.amazon.com/bedrock/latest/userguide/model-parameters-anthropic-claude-messages.html
- *
- * @param {string} prompt - The input text prompt for the model to complete.
- * @param {string} [modelId] - The ID of the model to use. Defaults to "anthropic.claude-3-haiku-20240307-v1:0".
- */
-export const invokeModel = async (
-    prompt: string,
-    modelId = "anthropic.claude-3-5-sonnet-20241022-v2:0"
-) => {
-    // Create a new Bedrock Runtime client instance.
-    const client = new BedrockRuntimeClient({ region: "us-west-2" });
-
-    // Prepare the payload for the model.
-    prompt = `"${prompt}"
-Return a json in the form:
-{
-"category": "test-class"
-}`;
-    const payload = {
-        anthropic_version: "bedrock-2023-05-31",
-        max_tokens: 1000,
-        messages: [
-            {
-                role: "user",
-                content: [{ type: "text", text: prompt }],
-            },
-        ],
-    };
-
-    // Invoke Claude with the payload and wait for the response.
-    const command = new InvokeModelCommand({
-        contentType: "application/json",
-        body: JSON.stringify(payload),
-        modelId,
-    });
-    const apiResponse = await client.send(command);
-
-    // Decode and return the response(s)
-    const decodedResponseBody = new TextDecoder().decode(apiResponse.body);
-    /** @type {MessagesResponseBody} */
-    const responseBody = JSON.parse(decodedResponseBody);
-    console.log("BEDROCK_RESPONSE: ", responseBody.content[0].text);
-    return responseBody.content[0].text;
-};
-
-/**
- *
- *
- *
- *
- *
- * Handler function for uploadMessage Lambda
- */
-
-const dynamoDbClient = new DynamoDBClient();
-
-export const handler = async (event: any) => {
-    console.log("POST REQUEST: ", JSON.stringify(event));
-
-    let messageData: Message = {
-        sender_id: "",
-        recipient_id: "",
-        message: "",
-        date: "",
-    };
-
-    try {
-        messageData = JSON.parse(event.body);
-
-        // Example usage
-        console.log(`Sender ID: ${messageData.sender_id}`);
-        console.log(`Recipient ID: ${messageData.recipient_id}`);
-        console.log(`Message: ${messageData.message}`);
-        console.log(
-            `Image URL: ${messageData.s3_image ?? "No image provided"}`
-        );
-        console.log(`Date: ${new Date(messageData.date).toLocaleString()}`);
-    } catch (error) {
-        console.error("Failed to parse JSON:", error);
+export const handler = async (event: APIGatewayEvent, _: Context) => {
+  try {
+    if (!event.body) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "No request body provided" }),
+      };
     }
 
-    const modelResponseStr = await invokeModel(messageData.message);
-    const modelResponseObj = JSON.parse(modelResponseStr);
+    const { sender_id, recipient_id, message, imageBase64, date, category } = JSON.parse(event.body);
 
-    const tableName = "message-table"; // Replace with your table name
-    const item = {
-        recipient_id: {
-            S: messageData.recipient_id,
-        }, // Partition key
-        sender_id: {
-            S: messageData.sender_id,
-        },
-        message: {
-            S: messageData.message,
-        },
-        s3_image: {
-            S: messageData.s3_image ?? "",
-        },
-        date: {
-            S: messageData.date,
-        },
-        category: {
-            S: modelResponseObj.category,
-        },
-    };
-
-    const params = {
-        Item: item,
-        ReturnConsumedCapacity: ReturnConsumedCapacity.NONE,
-        TableName: tableName,
-    };
-
-    try {
-        const result = await dynamoDbClient.send(new PutItemCommand(params));
-        console.log("Item added successfully:", result);
-        return {
-            statusCode: 200,
-            body: JSON.stringify({
-                message: "Item added successfully",
-                result,
-            }),
-        };
-    } catch (error) {
-        const errorMessage =
-            error instanceof Error ? error.message : "Unknown error";
-        console.error("Error adding item:", errorMessage);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({
-                message: "Failed to add item",
-                error: errorMessage,
-            }),
-        };
+    if (!sender_id || !recipient_id || !message || !imageBase64 || !date || !category) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: "Missing required fields" }),
+      };
     }
+
+    // Generate a unique S3 object key
+    const imageKey = `images/${uuidv4()}.jpg`;
+    const imageBuffer = Buffer.from(imageBase64, "base64");
+
+    await s3.send(
+      new PutObjectCommand({
+        Bucket: BUCKET_NAME,
+        Key: imageKey,
+        Body: imageBuffer,
+        ContentType: "image/jpeg",
+      })
+    );
+
+    const imageUrl = `https://${BUCKET_NAME}.s3.amazonaws.com/${imageKey}`;
+
+    // Store message metadata (including image URL) in DynamoDB
+    await ddb.send(
+      new PutItemCommand({
+        TableName: MESSAGE_TABLE_NAME,
+        Item: {
+          sender_id: { S: sender_id },
+          recipient_id: { S: recipient_id },
+          message: { S: message },
+          s3_image: { S: imageUrl },
+          date: { S: date },
+          category: { S: category },
+        },
+      })
+    );
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ message: "Message and image stored successfully" }),
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Failed to store message", error }),
+    };
+  }
 };

@@ -114,20 +114,19 @@ export class MemoriesBackendStack extends Stack {
             },
         });
 
-        this.uploadMessageFunction = new Function(
-            this,
-            "UploadMessageFunction",
-            {
-                functionName: "UploadMessage",
-                code: new AssetCode("build/src"),
-                handler: "upload-message.handler",
-                runtime: Runtime.NODEJS_18_X,
-                role: lambdaRole,
-                memorySize: 1024,
-                timeout: Duration.seconds(300),
-                logRetention: RetentionDays.THREE_MONTHS,
-            }
-        );
+    this.uploadMessageFunction = new Function(this, "UploadMessageFunction", {
+      functionName: "UploadMessage",
+      code: new AssetCode("build/src"),
+      handler: "upload-message.handler",
+      runtime: Runtime.NODEJS_18_X,
+      role: lambdaRole,
+      memorySize: 1024,
+      timeout: Duration.seconds(300),
+      logRetention: RetentionDays.THREE_MONTHS,
+      environment: {
+        BUCKET_NAME: `memories-images-${this.account}`,
+      },
+    });
 
         this.getMessageFunction = new Function(this, "GetMessageFunction", {
             functionName: "GetMessage",
@@ -243,12 +242,7 @@ export class MemoriesBackendStack extends Stack {
             .addResource("all")
             .addMethod("GET", getAllUsersIntegration);
 
-        const addAccountIntegration = new LambdaIntegration(
-            this.addNewAccountFunction,
-            { proxy: true }
-        );
-        accountResource
-            .addResource("create")
-            .addMethod("POST", addAccountIntegration);
-    }
+    const addAccountIntegration = new LambdaIntegration(this.addNewAccountFunction, { proxy: true });
+    accountResource.addResource("create").addMethod("POST", addAccountIntegration);
+  }
 }
